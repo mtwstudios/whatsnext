@@ -186,8 +186,8 @@ class CategoryListHandler(BaseHandler):
   
     def get(self, category_list):
         res = []
-        latitude = 40.756084
-        longitude = -73.990195
+        latitude = self.request.get("lat")
+        longitude = self.request.get("long")
         
         res = self.getNYTEventsCategoryList(latitude, longitude)
         
@@ -203,7 +203,7 @@ class CategoryListHandler(BaseHandler):
         'facets': 1
         }
       response = json.load(urllib.urlopen(api_url + urllib.urlencode(args)))
-      return response
+      return response["facets"]["category"]
 
 class EventsByCategoryHandler(BaseHandler):
   
@@ -226,7 +226,7 @@ class EventHandler(BaseHandler):
         'filters': 'asset_id:'+event_id,
         }
       response = json.load(urllib.urlopen(api_url + urllib.urlencode(args)))
-      return response
+      return response["results"][0]
 
 def main():
     logging.getLogger().setLevel(logging.DEBUG)
