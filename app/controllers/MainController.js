@@ -11,9 +11,16 @@ App.controllers.main = new Ext.Controller({
         App.stores.categories.load({
             scope   : this,
             callback: function(records, operation, success) {
+                App.views.eventsView.setActiveItem(App.views.categoriesView);
                 App.views.viewport.setActiveItem(App.views.eventsView);
             }
         });
+    },
+
+    onViewCategory: function(options) {
+        App.views.categoryEventsView.updateRecord(options.category)
+        App.views.eventsView.setActiveItem(App.views.categoryEventsView);
+        App.views.viewport.setActiveItem(App.views.eventsView);
     },
 
 });

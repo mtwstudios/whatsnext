@@ -8,9 +8,11 @@ App.views.EventsView = Ext.extend(Ext.Panel, {
     initComponent: function() {
     
         App.views.categoriesView = new App.views.CategoriesView();
+        App.views.categoryEventsView = new App.views.CategoryEventsView();
 
         this.items = [
             App.views.categoriesView,
+            App.views.categoryEventsView,
         ];
         this.activeItem = 0;
 

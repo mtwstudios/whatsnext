@@ -9,8 +9,8 @@ var WhatsNext = {
     app: {{ app_json }},
     checkin: {{ checkin_json }},
     geo: {
-        latitude: 40.76368014,
-        longitude: -73.98866,
+        lat: 40.76368014,
+        long: -73.98866,
     }
 }
 
