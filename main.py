@@ -16,6 +16,7 @@ from util import *
 FOURSQUARE_APP_ID = '4HSAFDIQTQ5XDGD0PTLQLM3XCQVEWPXIJFEU2HMFUBLNJWZA'
 FOURSQUARE_APP_SECRET = 'II44UIET5HIEPGM2OGBINJ1YDKL05PFZYP4DG5YJMTIRS5DL'
 DEBUG = os.environ['SERVER_SOFTWARE'].startswith('Dev')
+NYT_EVENTS_API_KEY = 'a5257b1b2b666ce2befb0ba35eeb1e16:11:60788440'
 
 class User(db.Model):
     id = db.StringProperty(required=True)
@@ -146,14 +147,22 @@ class MainHandler(BaseHandler):
 
 class VenuesHandler(BaseHandler):
 
-    def get(self, req, games, ext, game_id):
+    def get(self, req):
         res = []
 
-        args = dict(access_token=self.current_user.access_token)
-        url = 'https://foursquare.com/API'
+        args = dict(ll="40.7,-74", v=20111203, oauth_token=self.current_user.access_token)
+        url = 'https://api.foursquare.com/v2/venues/search?'
         response = json.load(urllib.urlopen(url + urllib.urlencode(args)))
+	for venue in response['response']['venues']:
+	    res = {
+	        'id': venue['id'],
+		'name': venue['name'],
+		#'address': venue['location']['address']
+	    }
+	 
         
         self.response.headers['Content-Type'] = 'application/json'
+        #self.response.out.write(json.dumps(response["response"]["venues"][0]))
         self.response.out.write(json.dumps(res))
 
 class EventsHandler(BaseHandler):
@@ -173,11 +182,60 @@ class CheckInHandler(BaseHandler):
         self.response.headers['Content-Type'] = 'application/json'
         self.response.out.write(json.dumps(res))
         
+class CategoryListHandler(BaseHandler):
+  
+    def get(self, category_list):
+        res = []
+        latitude = self.request.get("lat")
+        longitude = self.request.get("long")
+        
+        res = self.getNYTEventsCategoryList(latitude, longitude)
+        
+        self.response.headers['Content-Type'] = 'application/json'
+        self.response.out.write(json.dumps(res))
+
+    def getNYTEventsCategoryList(self, latitude, longitude):
+      api_url = "http://api.nytimes.com/svc/events/v2/listings.json?"
+      args = {
+        'api-key': NYT_EVENTS_API_KEY,
+        'radius': '1000',
+        'll': str(latitude)+","+str(longitude),
+        'facets': 1
+        }
+      response = json.load(urllib.urlopen(api_url + urllib.urlencode(args)))
+      return response["facets"]["category"]
+
+class EventsByCategoryHandler(BaseHandler):
+  
+    def get(self, event, category, category_id):
+      res = ["Events by category"]
+      self.response.headers['Content-Type'] = 'application/json'
+      self.response.out.write(json.dumps(res))
+
+class EventHandler(BaseHandler):
+
+    def get(self, event, event_id):
+      res = self.getNYTEventByID(event_id)
+      self.response.headers['Content-Type'] = 'application/json'
+      self.response.out.write(json.dumps(res))
+
+    def getNYTEventByID(self, event_id):
+      api_url = "http://api.nytimes.com/svc/events/v2/listings.json?"
+      args = {
+        'api-key': NYT_EVENTS_API_KEY,
+        'filters': 'asset_id:'+event_id,
+        }
+      response = json.load(urllib.urlopen(api_url + urllib.urlencode(args)))
+      return response["results"][0]
+
 def main():
     logging.getLogger().setLevel(logging.DEBUG)
 
     application = webapp.WSGIApplication([
         ('/((index).(html|js))?', MainHandler),
+        ('/(category_list)', CategoryListHandler),
+        ('/(event)/(category)/(.*)', EventsByCategoryHandler),
+        ('/(event)/(.*)', EventHandler),
         ('/(venues)', VenuesHandler),
         ('/(events)', EventsHandler),
         ('/(checkin)', CheckInHandler),
