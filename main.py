@@ -237,7 +237,9 @@ class EventsByCategoryHandler(BaseHandler):
         'filters': "category:"+category
         }
       response = json.load(urllib.urlopen(NYT_EVENTS_API_URL + urllib.urlencode(args)))
-      return response["results"]
+      events = response["results"]
+      filtered_results =  map(lambda event: {"name":event["event_name"],"venue_name":event["venue_name"],"street_address":event["street_address"],"times_pick":event["times_pick"]}, events)
+      return filtered_results
 
 class EventHandler(BaseHandler):
 
