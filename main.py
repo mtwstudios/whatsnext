@@ -215,10 +215,18 @@ class EventsByCategoryHandler(BaseHandler):
 class EventHandler(BaseHandler):
 
     def get(self, event, event_id):
-      res = ["single event"]
+      res = self.getNYTEventByID(event_id)
       self.response.headers['Content-Type'] = 'application/json'
       self.response.out.write(json.dumps(res))
 
+    def getNYTEventByID(self, event_id):
+      api_url = "http://api.nytimes.com/svc/events/v2/listings.json?"
+      args = {
+        'api-key': NYT_EVENTS_API_KEY,
+        'filters': 'asset_id:'+event_id,
+        }
+      response = json.load(urllib.urlopen(api_url + urllib.urlencode(args)))
+      return response
 
 def main():
     logging.getLogger().setLevel(logging.DEBUG)
