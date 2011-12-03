@@ -74,7 +74,6 @@ class BaseHandler(webapp.RequestHandler):
     
                 response = json.load(urllib.urlopen('https://api.foursquare.com/v2/users/self?' +
                     urllib.urlencode(dict(oauth_token=access_token))))
-                logging.debug(response)
                 
                 profile = response['response']['user']
                 user = User(key_name=str(profile["id"]), id=str(profile["id"]), name=profile["firstName"] + ' ' + profile["lastName"],
@@ -108,22 +107,14 @@ class MainHandler(BaseHandler):
             self.response.headers['Content-Type'] = 'text/javascript'
         tpl = page + '.' + ext
 
-        nextsunday = DatesUtil.nextsunday()
         app = {
             'games': {},
             'views': {
                 'home': 'home'
             },
-            'forms': {
-                'start_date': str(nextsunday),
-#                 {
-#                     'year': nextsunday.year,
-#                     'month': nextsunday.month,
-#                     'day': nextsunday.day,
-#                 },
-            },
         }
                 
+        checkin = None
         if not self.current_user: 
             user = {
                 'id': '-',
@@ -137,11 +128,20 @@ class MainHandler(BaseHandler):
             }
 
             if req == 'index.js':
-                app['info'] = {}
-                            
+                response = json.load(urllib.urlopen('https://api.foursquare.com/v2/users/self/checkins?limit=1&' +
+                    urllib.urlencode(dict(oauth_token=self.current_user.access_token))))
+                logging.debug(response)
+                checkin = {
+                    'name': response['response']['checkins']['items'][0]['venue']['name'],
+                    'location': response['response']['checkins']['items'][0]['venue']['location']['city'] + ', ' + response['response']['checkins']['items'][0]['venue']['location']['state'],
+                    'latitude': response['response']['checkins']['items'][0]['venue']['location']['lat'],
+                    'longitude': response['response']['checkins']['items'][0]['venue']['location']['lng'],
+                }
+                
         values = dict(site=values, user=user, foursquare=self.foursquare_values,
             site_json=GqlEncoder().encode(values), user_json=GqlEncoder().encode(user),
-            foursquare_json=GqlEncoder().encode(self.foursquare_values), app_json=GqlEncoder().encode(app))
+            foursquare_json=GqlEncoder().encode(self.foursquare_values), app_json=GqlEncoder().encode(app),
+            checkin_json=GqlEncoder().encode(checkin))
 
         path = os.path.join(path, tpl)
         self.response.out.write(template.render(path, values))
@@ -171,7 +171,7 @@ class VenuesHandler(BaseHandler):
 	    else:
 		icon=venue['categories'][0]['icon']['prefix'] + "32.png"
 
-	    res = {
+	    res1 = {
 	        'id': venue['id'],
 		'name': venue['name'],
 		'address': address,
@@ -180,7 +180,7 @@ class VenuesHandler(BaseHandler):
 		'icon': icon,
 		'here_now': venue['hereNow']['count']
 	    }
-	    #res.append(res1)
+	    res.append(res1)
 	 
         
         self.response.headers['Content-Type'] = 'application/json'
@@ -272,6 +272,7 @@ def main():
         ('/(event)/(category)/(.*)', EventsByCategoryHandler),
         ('/(event)/(.*)', EventHandler),
         ('/(venues)', VenuesHandler),
+        #('/(venue)/(.*)', VenueDetailHandler),
         ('/(checkin)', CheckInHandler),
         ], debug=True)
 

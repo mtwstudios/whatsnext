@@ -20,11 +20,7 @@ App.views.LoginView = Ext.extend(Ext.Panel, {
                 });
             },
         },
-        {
-            cls: 'terms',
-            html: '<span>By logging in, you accept our terms of use.</span>',
-        },
     ]    
 });
 
-Ext.reg('App.views.LoginView', App.views.LoginView);
+/* Ext.reg('App.views.LoginView', App.views.LoginView); */
