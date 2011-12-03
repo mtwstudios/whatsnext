@@ -146,14 +146,22 @@ class MainHandler(BaseHandler):
 
 class VenuesHandler(BaseHandler):
 
-    def get(self, req, games, ext, game_id):
+    def get(self, req):
         res = []
 
-        args = dict(access_token=self.current_user.access_token)
-        url = 'https://foursquare.com/API'
+        args = dict(ll="40.7,-74", v=20111203, oauth_token=self.current_user.access_token)
+        url = 'https://api.foursquare.com/v2/venues/search?'
         response = json.load(urllib.urlopen(url + urllib.urlencode(args)))
+	for venue in response['response']['venues']:
+	    res = {
+	        'id': venue['id'],
+		'name': venue['name'],
+		#'address': venue['location']['address']
+	    }
+	 
         
         self.response.headers['Content-Type'] = 'application/json'
+        #self.response.out.write(json.dumps(response["response"]["venues"][0]))
         self.response.out.write(json.dumps(res))
 
 class EventsHandler(BaseHandler):
