@@ -187,11 +187,12 @@ class CategoryListHandler(BaseHandler):
         self.response.out.write(json.dumps(res))
 
     def getNYTEventsCategoryList(self, latitude, longitude):
-      api_url = "http://api.nytimes.com/svc/events/v2/listings.json?&facets=1&ll=40.7%2C-74&radius=1000"
+      api_url = "http://api.nytimes.com/svc/events/v2/listings.json?"
       args = {
         'api-key': NYT_EVENTS_API_KEY,
         'radius': '1000',
-        'll': str(latitude)+","+str(longitude)
+        'll': str(latitude)+","+str(longitude),
+        'facets': 1
         }
       response = json.load(urllib.urlopen(api_url + urllib.urlencode(args)))
       return response
