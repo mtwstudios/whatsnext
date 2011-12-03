@@ -1,0 +1,34 @@
+application: whatsnexthhack
+version: 1
+runtime: python
+api_version: 1
+
+handlers:
+- url: /css
+  static_dir: static/css
+
+- url: /html
+  static_dir: static/html
+
+- url: /images
+  static_dir: static/images
+
+- url: /js
+  static_dir: static/js
+
+- url: /favicon.ico
+  static_files: static/images/favicon.png
+  upload: static/images/favicon.png
+
+- url: /lib
+  static_dir: lib
+
+- url: /app
+  static_dir: app
+
+- url: .*
+  script: main.py
+  
+builtins:
+- appstats: on
+
