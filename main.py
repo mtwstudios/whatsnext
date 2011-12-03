@@ -3,6 +3,7 @@ import os.path
 import random
 import urllib
 import logging
+import operator
 
 from datetime import time, datetime, timedelta
 
@@ -203,7 +204,13 @@ class CategoryListHandler(BaseHandler):
         'facets': 1
         }
       response = json.load(urllib.urlopen(NYT_EVENTS_API_URL + urllib.urlencode(args)))
-      return response["facets"]["category"]
+      categories = response["facets"]["category"]
+      category_list = []
+      for key, value in categories.iteritems():
+          temp = {"name":key,"count":value}
+          category_list.append(temp)
+      sorted_category_list = sorted(category_list, key=lambda x: x["count"], reverse=True)
+      return sorted_category_list
 
 class EventsByCategoryHandler(BaseHandler):
   
