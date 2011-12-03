@@ -176,7 +176,7 @@ class CheckInHandler(BaseHandler):
         
 class CategoryListHandler(BaseHandler):
   
-    def get(self, req):
+    def get(self, category_list):
         res = []
         latitude = 40.756084
         longitude = -73.990195
@@ -197,12 +197,29 @@ class CategoryListHandler(BaseHandler):
       response = json.load(urllib.urlopen(api_url + urllib.urlencode(args)))
       return response
 
+class EventsByCategoryHandler(BaseHandler):
+  
+    def get(self, event, category, category_id):
+      res = ["Events by category"]
+      self.response.headers['Content-Type'] = 'application/json'
+      self.response.out.write(json.dumps(res))
+
+class EventHandler(BaseHandler):
+
+    def get(self, event, event_id):
+      res = ["single event"]
+      self.response.headers['Content-Type'] = 'application/json'
+      self.response.out.write(json.dumps(res))
+
+
 def main():
     logging.getLogger().setLevel(logging.DEBUG)
 
     application = webapp.WSGIApplication([
         ('/((index).(html|js))?', MainHandler),
         ('/(category_list)', CategoryListHandler),
+        ('/(event)/(category)/(.*)', EventsByCategoryHandler),
+        ('/(event)/(.*)', EventHandler),
         ('/(venues)', VenuesHandler),
         ('/(events)', EventsHandler),
         ('/(checkin)', CheckInHandler),
