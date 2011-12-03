@@ -154,15 +154,32 @@ class VenuesHandler(BaseHandler):
         url = 'https://api.foursquare.com/v2/venues/search?'
         response = json.load(urllib.urlopen(url + urllib.urlencode(args)))
 	for venue in response['response']['venues']:
-	    res = {
+	
+	    if(venue['location'].has_key('address')):  
+		address=(venue['location']['address']) 
+	    else:
+		address=None
+
+	    if(venue['location'].has_key('cross_street')):  
+		cross_street=(venue['location']['cross_street']) 
+	    else:
+		cross_street=None
+
+	    res1 = {
 	        'id': venue['id'],
 		'name': venue['name'],
-		#'address': venue['location']['address']
+		'address': address,
+		'cross_street': cross_street,
+		'distance': venue['location']['distance'],
+		#'icon': venue['categories']['prefix'],
+		'here_now': venue['hereNow']['count']
 	    }
+	    res.append(res1)
 	 
         
         self.response.headers['Content-Type'] = 'application/json'
         #self.response.out.write(json.dumps(response["response"]["venues"][0]))
+        #self.response.out.write(json.dumps(response["response"]["venues"][0]["location"]["address"]))
         self.response.out.write(json.dumps(res))
 
 class EventsHandler(BaseHandler):
