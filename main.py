@@ -173,11 +173,21 @@ class CheckInHandler(BaseHandler):
         self.response.headers['Content-Type'] = 'application/json'
         self.response.out.write(json.dumps(res))
         
+class CategoryListHandler(BaseHandler):
+  
+    def get(self, req):
+        res = []
+        
+        self.response.headers['Content-Type'] = 'application/json'
+        self.response.out.write(json.dumps(res))
+
+
 def main():
     logging.getLogger().setLevel(logging.DEBUG)
 
     application = webapp.WSGIApplication([
         ('/((index).(html|js))?', MainHandler),
+        ('/(category_list)', CategoryListHandler),
         ('/(venues)', VenuesHandler),
         ('/(events)', EventsHandler),
         ('/(checkin)', CheckInHandler),
