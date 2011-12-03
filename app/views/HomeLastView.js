@@ -1,6 +1,6 @@
-App.views.HomeStartView = Ext.extend(Ext.Panel, {
+App.views.HomeLastView = Ext.extend(Ext.Panel, {
     fullscreen: true,
-    cls: 'home start',
+    cls: 'home last',
     layout: {
         type: 'vbox',
     },
@@ -29,16 +29,16 @@ App.views.HomeStartView = Ext.extend(Ext.Panel, {
     items: [
         {
             cls: 'header',
-            html: '<div><h1>Getting Started</h1><p>Welcome ' + WhatsNext.user.name + '</p></div>',
+            html: '<div><h1>Hey ' + WhatsNext.user.name + '!</h1></div>' + (WhatsNext.checkin ? '<p>Your last checkin\'s at ' + WhatsNext.checkin.name + ' at ' + WhatsNext.checkin.location + '</p>' : '<p>NO</p>'),
         },
         {
             xtype: 'button',
-            text: 'Check In!',
+            text: 'What\'s Next',
             ui: 'action',
             handler: function() {
                 Ext.dispatch({
                     controller: App.controllers.main,
-                    action: '',
+                    action: 'onListCategories',
                 });
             },
         },
