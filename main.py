@@ -17,6 +17,7 @@ FOURSQUARE_APP_ID = '4HSAFDIQTQ5XDGD0PTLQLM3XCQVEWPXIJFEU2HMFUBLNJWZA'
 FOURSQUARE_APP_SECRET = 'II44UIET5HIEPGM2OGBINJ1YDKL05PFZYP4DG5YJMTIRS5DL'
 DEBUG = os.environ['SERVER_SOFTWARE'].startswith('Dev')
 NYT_EVENTS_API_KEY = 'a5257b1b2b666ce2befb0ba35eeb1e16:11:60788440'
+NYT_EVENTS_API_URL = "http://api.nytimes.com/svc/events/v2/listings.json?"
 
 class User(db.Model):
     id = db.StringProperty(required=True)
@@ -185,7 +186,6 @@ class CheckInHandler(BaseHandler):
 class CategoryListHandler(BaseHandler):
   
     def get(self, category_list):
-        res = []
         latitude = self.request.get("lat")
         longitude = self.request.get("long")
         
@@ -202,15 +202,33 @@ class CategoryListHandler(BaseHandler):
         'll': str(latitude)+","+str(longitude),
         'facets': 1
         }
-      response = json.load(urllib.urlopen(api_url + urllib.urlencode(args)))
-      return response["facets"]["category"]
+      response = json.load(urllib.urlopen(NYT_EVENTS_API_URL + urllib.urlencode(args)))
+      categories = response["facets"]["category"]
+      category_list = []
+      for key, value in categories.iteritems():
+          temp = {"name":key,"count":value}
+          category_list.append(temp)
+      sorted_category_list = sorted(category_list, key=lambda x: x["count"], reverse=True)
+      return sorted_category_list
 
 class EventsByCategoryHandler(BaseHandler):
   
     def get(self, event, category, category_id):
-      res = ["Events by category"]
+      latitude = self.request.get("lat")
+      longitude = self.request.get("long")
+      res = self.getNYTEventsByCategory(category_id, latitude, longitude)
       self.response.headers['Content-Type'] = 'application/json'
       self.response.out.write(json.dumps(res))
+      
+    def getNYTEventsByCategory(self, category, latitude, longitude):
+      args = {
+        'api-key': NYT_EVENTS_API_KEY,
+        'radius': '1000',
+        'll': str(latitude)+","+str(longitude),
+        'filters': "category:"+category
+        }
+      response = json.load(urllib.urlopen(NYT_EVENTS_API_URL + urllib.urlencode(args)))
+      return response["results"]
 
 class EventHandler(BaseHandler):
 
@@ -220,12 +238,11 @@ class EventHandler(BaseHandler):
       self.response.out.write(json.dumps(res))
 
     def getNYTEventByID(self, event_id):
-      api_url = "http://api.nytimes.com/svc/events/v2/listings.json?"
       args = {
         'api-key': NYT_EVENTS_API_KEY,
         'filters': 'asset_id:'+event_id,
         }
-      response = json.load(urllib.urlopen(api_url + urllib.urlencode(args)))
+      response = json.load(urllib.urlopen(NYT_EVENTS_API_URL + urllib.urlencode(args)))
       return response["results"][0]
 
 def main():
