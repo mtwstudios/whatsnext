@@ -183,14 +183,6 @@ class VenuesHandler(BaseHandler):
         #self.response.out.write(json.dumps(response["response"]["venues"][0]["location"]["address"]))
         self.response.out.write(json.dumps(res))
 
-class EventsHandler(BaseHandler):
-
-    def get(self, req, games, ext, game_id, ext2, user_id):
-        res = []
-                
-        self.response.headers['Content-Type'] = 'application/json'
-        self.response.out.write(json.dumps(res))
-        
 class CheckInHandler(BaseHandler):
 
     def post(self, req, checkins, ext, checkin_id):
@@ -271,7 +263,6 @@ def main():
         ('/(event)/(category)/(.*)', EventsByCategoryHandler),
         ('/(event)/(.*)', EventHandler),
         ('/(venues)', VenuesHandler),
-        ('/(events)', EventsHandler),
         ('/(checkin)', CheckInHandler),
         ], debug=True)
 
