@@ -171,7 +171,7 @@ class VenuesHandler(BaseHandler):
 	    else:
 		icon=venue['categories'][0]['icon']['prefix'] + "32.png"
 
-	    res = {
+	    res1 = {
 	        'id': venue['id'],
 		'name': venue['name'],
 		'address': address,
@@ -180,7 +180,7 @@ class VenuesHandler(BaseHandler):
 		'icon': icon,
 		'here_now': venue['hereNow']['count']
 	    }
-	    #res.append(res1)
+	    res.append(res1)
 	 
         
         self.response.headers['Content-Type'] = 'application/json'
@@ -272,6 +272,7 @@ def main():
         ('/(event)/(category)/(.*)', EventsByCategoryHandler),
         ('/(event)/(.*)', EventHandler),
         ('/(venues)', VenuesHandler),
+        #('/(venue)/(.*)', VenueDetailHandler),
         ('/(checkin)', CheckInHandler),
         ], debug=True)
 
