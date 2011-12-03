@@ -155,25 +155,41 @@ class VenuesHandler(BaseHandler):
         url = 'https://api.foursquare.com/v2/venues/search?'
         response = json.load(urllib.urlopen(url + urllib.urlencode(args)))
 	for venue in response['response']['venues']:
-	    res = {
+	
+	    if(venue['location'].has_key('address')):  
+		address=(venue['location']['address']) 
+	    else:
+		address=None
+
+	    if(venue['location'].has_key('cross_street')):  
+		cross_street=(venue['location']['cross_street']) 
+	    else:
+		cross_street=None
+
+	    if(len(venue['categories']) == 0):
+		icon==None
+	    else:
+		icon=venue['categories'][0]['icon']['prefix'] + "32.png"
+
+	    res1 = {
 	        'id': venue['id'],
 		'name': venue['name'],
-		#'address': venue['location']['address']
+		'address': address,
+		'cross_street': cross_street,
+		'distance': venue['location']['distance'],
+		'icon': icon,
+		'here_now': venue['hereNow']['count']
 	    }
+	    res.append(res1)
 	 
         
         self.response.headers['Content-Type'] = 'application/json'
-        #self.response.out.write(json.dumps(response["response"]["venues"][0]))
+        #self.response.out.write(json.dumps(response["response"]["venues"][0]['categories']))
+        #self.response.out.write(json.dumps(response["response"]["venues"][0]["location"]["address"]))
+	#self.response.out.write(json.dumps(response["response"]["venues"][0]['categories']['icon']['prefix'])),
+	#self.response.out.write(json.dumps(response["response"]["venues"][0]['categories'][0]['icon']['prefix'])),
         self.response.out.write(json.dumps(res))
 
-class EventsHandler(BaseHandler):
-
-    def get(self, req, games, ext, game_id, ext2, user_id):
-        res = []
-                
-        self.response.headers['Content-Type'] = 'application/json'
-        self.response.out.write(json.dumps(res))
-        
 class CheckInHandler(BaseHandler):
 
     def post(self, req, checkins, ext, checkin_id):
@@ -228,7 +244,9 @@ class EventsByCategoryHandler(BaseHandler):
         'filters': "category:"+category
         }
       response = json.load(urllib.urlopen(NYT_EVENTS_API_URL + urllib.urlencode(args)))
-      return response["results"]
+      events = response["results"]
+      filtered_results =  map(lambda event: {"name":event["event_name"],"venue_name":event["venue_name"],"street_address":event["street_address"],"times_pick":event["times_pick"]}, events)
+      return filtered_results
 
 class EventHandler(BaseHandler):
 
@@ -254,7 +272,7 @@ def main():
         ('/(event)/(category)/(.*)', EventsByCategoryHandler),
         ('/(event)/(.*)', EventHandler),
         ('/(venues)', VenuesHandler),
-        ('/(events)', EventsHandler),
+        #('/(venue)/(.*)', VenueDetailHandler),
         ('/(checkin)', CheckInHandler),
         ], debug=True)
 
