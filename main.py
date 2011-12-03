@@ -16,6 +16,7 @@ from util import *
 FOURSQUARE_APP_ID = '4HSAFDIQTQ5XDGD0PTLQLM3XCQVEWPXIJFEU2HMFUBLNJWZA'
 FOURSQUARE_APP_SECRET = 'II44UIET5HIEPGM2OGBINJ1YDKL05PFZYP4DG5YJMTIRS5DL'
 DEBUG = os.environ['SERVER_SOFTWARE'].startswith('Dev')
+NYT_EVENTS_API_KEY = 'a5257b1b2b666ce2befb0ba35eeb1e16:11:60788440'
 
 class User(db.Model):
     id = db.StringProperty(required=True)
@@ -177,10 +178,23 @@ class CategoryListHandler(BaseHandler):
   
     def get(self, req):
         res = []
+        latitude = 40.756084
+        longitude = -73.990195
+        
+        res = self.getNYTEventsCategoryList(latitude, longitude)
         
         self.response.headers['Content-Type'] = 'application/json'
         self.response.out.write(json.dumps(res))
 
+    def getNYTEventsCategoryList(self, latitude, longitude):
+      api_url = "http://api.nytimes.com/svc/events/v2/listings.json?&facets=1&ll=40.7%2C-74&radius=1000"
+      args = {
+        'api-key': NYT_EVENTS_API_KEY,
+        'radius': '1000',
+        'll': str(latitude)+","+str(longitude)
+        }
+      response = json.load(urllib.urlopen(api_url + urllib.urlencode(args)))
+      return response
 
 def main():
     logging.getLogger().setLevel(logging.DEBUG)
