@@ -3,7 +3,6 @@ import os.path
 import random
 import urllib
 import logging
-import operator
 
 from datetime import time, datetime, timedelta
 
