@@ -60,7 +60,6 @@ class BaseHandler(webapp.RequestHandler):
             if user_id:
                 self._current_user = User.get_by_key_name(user_id)
             if (self._current_user == None or self._current_user.access_token == None) and self.request.get("code"):
-                logging.info('HERERR' + self.request.get("code"))
                 args = dict(client_id=FOURSQUARE_APP_ID, redirect_uri=self.request.path_url, 
                     client_secret=FOURSQUARE_APP_SECRET, code=self.request.get("code"), grant_type='authorization_code')
                 token_url = 'https://foursquare.com/oauth2/access_token?'
@@ -149,6 +148,10 @@ class VenuesHandler(BaseHandler):
 
     def get(self, req, games, ext, game_id):
         res = []
+
+        args = dict(access_token=self.current_user.access_token)
+        url = 'https://foursquare.com/API'
+        response = json.load(urllib.urlopen(url + urllib.urlencode(args)))
         
         self.response.headers['Content-Type'] = 'application/json'
         self.response.out.write(json.dumps(res))

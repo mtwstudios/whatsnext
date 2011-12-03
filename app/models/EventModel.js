@@ -3,6 +3,9 @@ App.models.Event = Ext.regModel("App.models.Event", {
 	fields : [
         {name: "id", type: "string" },
         {name: "name", type: "string" },
+        {name: "times_pick", type: "string" },
+        {name: "venue", type: "string" },
+        {name: "category", type: "string" },
 	],
     proxy: {
         type: 'rest',
