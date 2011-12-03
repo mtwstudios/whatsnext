@@ -19,4 +19,4 @@ App.views.HomeView = Ext.extend(Ext.Panel, {
     
 });
 
-Ext.reg('App.views.HomeView', App.views.HomeView);
+/* Ext.reg('App.views.HomeView', App.views.HomeView); */

@@ -29,7 +29,7 @@ App.views.HomeLastView = Ext.extend(Ext.Panel, {
     items: [
         {
             cls: 'header',
-            html: '<div><h1>Hey ' + WhatsNext.user.name + '!</h1></div>' + (WhatsNext.checkin ? '<p>Your last checkin\'s at ' + WhatsNext.checkin.name + ' at ' + WhatsNext.checkin.location + '</p>' : '<p>NO</p>'),
+            html: '<div><h1>Hey ' + WhatsNext.user.name + '!</h1></div>' + (WhatsNext.checkin ? '<p>Your last checkin\'s at ' + WhatsNext.checkin.name + ' at ' + WhatsNext.checkin.location + '</p>' : '<p>NO LOCATION</p>'),
         },
         {
             xtype: 'button',
@@ -45,4 +45,4 @@ App.views.HomeLastView = Ext.extend(Ext.Panel, {
     ]    
 });
 
-Ext.reg('App.views.HomeStartView', App.views.HomeStartView);
+/* Ext.reg('App.views.HomeLastView', App.views.HomeLastView); */

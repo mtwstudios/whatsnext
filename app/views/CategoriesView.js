@@ -1,13 +1,11 @@
 App.views.CategoriesView = Ext.extend(Ext.Panel, {
-    cls: 'more',
-    layout: 'card',
-    iconCls: 'search', 
-    title: 'More',
     fullscreen: true,
+    cls: 'categories',
+    layout: 'vbox',
 
     dockedItems: [{
         xtype: 'toolbar',
-        title: 'Home',
+        title: 'Categories',
         items: [
             {xtype:'spacer'},
         ],
@@ -20,7 +18,6 @@ App.views.CategoriesView = Ext.extend(Ext.Panel, {
             flex: 1,
             width: '100%',
             store: App.stores.categories,
-            grouped: true,
             itemTpl: new App.CategoriesTemplate({inContext: false}),
             listeners: {
                 'itemtap': function(self, index, item, e) {
@@ -36,4 +33,4 @@ App.views.CategoriesView = Ext.extend(Ext.Panel, {
     
 });
 
-Ext.reg('App.views.HomeRecentView', App.views.HomeRecentView);
+/* Ext.reg('App.views.CategoriesView', App.views.CategoriesView); */
