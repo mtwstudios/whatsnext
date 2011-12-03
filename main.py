@@ -190,14 +190,6 @@ class VenuesHandler(BaseHandler):
 	#self.response.out.write(json.dumps(response["response"]["venues"][0]['categories'][0]['icon']['prefix'])),
         self.response.out.write(json.dumps(res))
 
-class EventsHandler(BaseHandler):
-
-    def get(self, req, games, ext, game_id, ext2, user_id):
-        res = []
-                
-        self.response.headers['Content-Type'] = 'application/json'
-        self.response.out.write(json.dumps(res))
-        
 class CheckInHandler(BaseHandler):
 
     def post(self, req, checkins, ext, checkin_id):
@@ -252,7 +244,9 @@ class EventsByCategoryHandler(BaseHandler):
         'filters': "category:"+category
         }
       response = json.load(urllib.urlopen(NYT_EVENTS_API_URL + urllib.urlencode(args)))
-      return response["results"]
+      events = response["results"]
+      filtered_results =  map(lambda event: {"name":event["event_name"],"venue_name":event["venue_name"],"street_address":event["street_address"],"times_pick":event["times_pick"]}, events)
+      return filtered_results
 
 class EventHandler(BaseHandler):
 
@@ -278,7 +272,6 @@ def main():
         ('/(event)/(category)/(.*)', EventsByCategoryHandler),
         ('/(event)/(.*)', EventHandler),
         ('/(venues)', VenuesHandler),
-        ('/(events)', EventsHandler),
         ('/(checkin)', CheckInHandler),
         ], debug=True)
 
