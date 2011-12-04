@@ -27,7 +27,7 @@ App.controllers.main = new Ext.Controller({
     onViewEvent: function(options) {
         App.views.eventsCategoryEventView.updateWithRecord(options.event);
         App.views.eventsCategoryEventView.doLayout();
-        App.views.eventsView.setActiveItem(App.views.eventsCategoryEventsView);
+        App.views.eventsView.setActiveItem(App.views.eventsCategoryEventView);
         App.views.viewport.setActiveItem(App.views.eventsView);
     },
 
@@ -35,6 +35,7 @@ App.controllers.main = new Ext.Controller({
         App.stores.venues.load({
             scope   : this,
             callback: function(records, operation, success) {
+                App.views.eventsVenuesView.doLayout();
                 App.views.eventsView.setActiveItem(App.views.eventsVenuesView);
                 App.views.viewport.setActiveItem(App.views.eventsView);
             }

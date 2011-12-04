@@ -7,7 +7,7 @@ App.views.EventsCategoryEventView = Ext.extend(Ext.Panel, {
     
     dockedItems: [{
         xtype: 'toolbar',
-        title: 'Event',
+        title: 'Venue',
     }],
     
     items: [
@@ -15,16 +15,16 @@ App.views.EventsCategoryEventView = Ext.extend(Ext.Panel, {
             id: 'eventinfo',
             xtype: 'panel',
             styleHtmlContent:true,
-            tpl: '<div>{name}</div>',
+            tpl: '<div><img src="{icon}" />{name} {venue} {venue_address} {category} {times_pick}</div>',
             data: {},
         },
     ],
 
     updateWithRecord: function(event) {
+        console.log(event);
         var infoPanel = this.getComponent('eventinfo');
-        infoPanel.getComponent('title').update(event.data);
-                
-        this.doLayout();
+        infoPanel.update(event.data);
+        infoPanel.doLayout();
     },
 
 });

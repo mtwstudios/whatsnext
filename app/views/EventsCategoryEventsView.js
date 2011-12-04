@@ -17,11 +17,8 @@ App.views.EventsCategoryEventsView = Ext.extend(Ext.Panel, {
             xtype: 'list',
             flex: 1,
             width: '100%',
-            store: new Ext.data.Store({
-                fields: [],
-                data: [],
-            }),            
-            itemTpl: new App.EventsTemplate(),
+            store: App.stores.events,           
+            itemTpl: new App.EventsTemplate({inContext: false}),
             listeners: {
                 'itemtap': function(self, index, item, e) {
                     Ext.dispatch({
@@ -35,6 +32,7 @@ App.views.EventsCategoryEventsView = Ext.extend(Ext.Panel, {
     ],
 
     updateWithRecord: function(category) {
+/*
         var events = this.getComponent('events');
         events.store = new Ext.data.Store({
             model: 'App.models.Event',
@@ -46,10 +44,11 @@ App.views.EventsCategoryEventsView = Ext.extend(Ext.Panel, {
         events.store.load({
             scope: this,
             callback: function(records, operation, success) {
-                console.log(records)
+                console.log(this.getComponent('events'))
                 this.getComponent('events').update(records);
             },
         });
+*/
                 
         this.doLayout();
     },

@@ -9,3 +9,12 @@ App.models.Event = Ext.regModel("App.models.Event", {
         {name: "times_pick", type: "string" },
 	],
 });
+
+App.stores.events = new Ext.data.Store({
+    model: 'App.models.Event',
+    proxy: {
+        type: 'ajax',
+        url: '/event/category/Theater?lat=' + WhatsNext.geo.lat + '&long=' + WhatsNext.geo.long,
+    },
+ 	autoLoad: true, 
+})
