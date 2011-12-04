@@ -19,7 +19,7 @@ App.views.EventsVenueView = Ext.extend(Ext.Panel, {
             id: 'venueinfo',
             xtype: 'panel',
             styleHtmlContent:true,
-            tpl: '<div><img src="{icon}" />{name} {address}</div>',
+            tpl: '<div><img src="{icon}" /><strong>{name}</strong><br /> {address}</div>',
             data: {},
         },
         {
