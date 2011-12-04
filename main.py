@@ -192,12 +192,50 @@ class VenuesHandler(BaseHandler):
 
 class CheckInHandler(BaseHandler):
 
-    def post(self, req, checkins, ext, checkin_id):
-        if not res:
-            res = { 'error': 'invalid request' }
+    def post(self, checkin, checkin_id):
+        res = []
+	oauth_token= self.request.get("access_token")
+        args = dict(venueId=checkin_id, v=20111203, oauth_token=self.request.get("access_token"))
+        #args = dict(ll="40.7,-74", v=20111203, oauth_token=self.current_user.access_token)
+        url = 'https://api.foursquare.com/v2/checkins/add?'
+        response = json.load(urllib.urlopen(url + urllib.urlencode(args)))
 
+	"""
+	for venue in response['response']['venues']:
+	
+	    if(venue['location'].has_key('address')):  
+		address=(venue['location']['address']) 
+	    else:
+		address=None
+
+	    if(venue['location'].has_key('cross_street')):  
+		cross_street=(venue['location']['cross_street']) 
+	    else:
+		cross_street=None
+
+	    if(len(venue['categories']) == 0):
+		icon==None
+	    else:
+		icon=venue['categories'][0]['icon']['prefix'] + "32.png"
+
+	    res1 = {
+	        'id': venue['id'],
+		'name': venue['name'],
+		'address': address,
+		'cross_street': cross_street,
+		'distance': venue['location']['distance'],
+		'icon': icon,
+		'here_now': venue['hereNow']['count']
+	    }
+	    res.append(res1)
+	 
+     	"""   
         self.response.headers['Content-Type'] = 'application/json'
-        self.response.out.write(json.dumps(res))
+        #self.response.out.write(json.dumps(response["response"]["venues"][0]['categories']))
+        #self.response.out.write(json.dumps(response["response"]["venues"][0]["location"]["address"]))
+	#self.response.out.write(json.dumps(response["response"]["venues"][0]['categories']['icon']['prefix'])),
+	#self.response.out.write(json.dumps(response["response"]["venues"][0]['categories'][0]['icon']['prefix'])),
+        self.response.out.write(json.dumps(response))
         
 class CategoryListHandler(BaseHandler):
   
@@ -272,8 +310,7 @@ def main():
         ('/(event)/(category)/(.*)', EventsByCategoryHandler),
         ('/(event)/(.*)', EventHandler),
         ('/(venues)', VenuesHandler),
-        #('/(venue)/(.*)', VenueDetailHandler),
-        ('/(checkin)', CheckInHandler),
+        ('/(checkin)/(.*)', CheckInHandler),
         ], debug=True)
 
     util.run_wsgi_app(application)
