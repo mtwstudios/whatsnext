@@ -133,7 +133,7 @@ class MainHandler(BaseHandler):
                 logging.debug(response)
                 checkin = {
                     'name': response['response']['checkins']['items'][0]['venue']['name'],
-                    'location': response['response']['checkins']['items'][0]['venue']['location']['city'] + ', ' + response['response']['checkins']['items'][0]['venue']['location']['state'],
+                    'address': response['response']['checkins']['items'][0]['venue']['location']['address'],
                     'latitude': response['response']['checkins']['items'][0]['venue']['location']['lat'],
                     'longitude': response['response']['checkins']['items'][0]['venue']['location']['lng'],
                 }

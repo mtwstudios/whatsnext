@@ -29,11 +29,11 @@ App.views.HomeLastView = Ext.extend(Ext.Panel, {
     items: [
         {
             cls: 'header',
-            html: '<div><h1>Hey ' + WhatsNext.user.name + '!</h1></div>' + (WhatsNext.checkin ? '<p>Your last checkin\'s at ' + WhatsNext.checkin.name + ' at ' + WhatsNext.checkin.location + '</p>' : '<p>NO LOCATION</p>'),
+            html: '<div><h1>Hey ' + WhatsNext.user.name + '!</h1></div>' + (WhatsNext.checkin ? '<p>Your last checkin\'s at ' + WhatsNext.checkin.name + ' at ' + WhatsNext.checkin.address + '</p>' : '<p>NO LOCATION</p>'),
         },
         {
             xtype: 'button',
-            text: 'What Next?',
+            text: 'What\'s Next?',
             ui: 'action',
             handler: function() {
                 Ext.dispatch({
