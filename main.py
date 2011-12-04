@@ -197,10 +197,12 @@ class CheckInHandler(BaseHandler):
 	oauth_token= self.request.get("access_token")
         args = dict(venueId=checkin_id, v=20111203, oauth_token=self.request.get("access_token"))
         url = 'https://api.foursquare.com/v2/checkins/add?'
-        response = json.load(urllib.urlopen(url + urllib.urlencode(args)))
+        f = urllib.urlopen(url,urllib.urlencode(args))
+	print f
+        response = json.load(urllib.urlopen(url,urllib.urlencode(args)))
 
         self.response.headers['Content-Type'] = 'application/json'
-        self.response.out.write(json.dumps(response))
+        #self.response.out.write(json.dumps(response))
         
 class CategoryListHandler(BaseHandler):
   
