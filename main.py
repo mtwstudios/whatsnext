@@ -237,10 +237,19 @@ class CategoryListHandler(BaseHandler):
       category_list = []
       for key, value in categories.iteritems():
           if value > 0:
-            temp = {"name":key,"count":value}
+            temp = {"name":self.translateCategoryName(key),"count":value}
             category_list.append(temp)
       sorted_category_list = sorted(category_list, key=lambda x: x["count"], reverse=True)
       return sorted_category_list
+      
+    def translateCategoryName(self, key):
+      if key == "forChildren":
+        return "For Children"
+      elif key == "spareTimes":
+        return "Spare Times"
+      else:
+        return key
+      
 
 class EventsByCategoryHandler(BaseHandler):
   
