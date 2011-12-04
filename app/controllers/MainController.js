@@ -7,4 +7,13 @@ App.controllers.main = new Ext.Controller({
     onLogout: function(options) {
     },
     
+    onListCategories: function(options) {
+        App.stores.categories.load({
+            scope   : this,
+            callback: function(records, operation, success) {
+                App.views.viewport.setActiveItem(App.views.eventsView);
+            }
+        });
+    },
+
 });

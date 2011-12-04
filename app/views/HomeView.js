@@ -7,10 +7,10 @@ App.views.HomeView = Ext.extend(Ext.Panel, {
     
     initComponent: function() {
     
-        App.views.homeStartView = new App.views.HomeStartView();
+        App.views.homeLastView = new App.views.HomeLastView();
 
         this.items = [
-            App.views.homeStartView,
+            App.views.homeLastView,
         ];
         this.activeItem = 0;
 
@@ -19,4 +19,4 @@ App.views.HomeView = Ext.extend(Ext.Panel, {
     
 });
 
-Ext.reg('App.views.HomeView', App.views.HomeView);
+/* Ext.reg('App.views.HomeView', App.views.HomeView); */

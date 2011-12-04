@@ -30,9 +30,11 @@ if (WhatsNext.app.views.home == 'start') {
         
         initComponent: function() {
             App.views.homeView = new App.views.HomeView();
+            App.views.eventsView = new App.views.EventsView();
 
             this.items = [
                 App.views.homeView,
+                App.views.eventsView,
             ]
             this.activeItem = 0;
             
