@@ -150,8 +150,17 @@ class VenuesHandler(BaseHandler):
 
     def get(self, req):
         res = []
+        latitude = self.request.get("lat")
+        longitude = self.request.get("long")
+	search_query = self.request.get("query")
 
-        args = dict(ll="40.7,-74", v=20111203, oauth_token=self.current_user.access_token)
+        #args = dict(ll="40.7,-74", v=20111203, oauth_token=self.current_user.access_token)
+        args = {
+		"ll":str(latitude)+","+str(longitude), 
+		"query":search_query,
+		"v":20111203, 
+		"oauth_token":self.current_user.access_token
+	}
         url = 'https://api.foursquare.com/v2/venues/search?'
         response = json.load(urllib.urlopen(url + urllib.urlencode(args)))
 	for venue in response['response']['venues']:
@@ -192,12 +201,17 @@ class VenuesHandler(BaseHandler):
 
 class CheckInHandler(BaseHandler):
 
-    def post(self, req, checkins, ext, checkin_id):
-        if not res:
-            res = { 'error': 'invalid request' }
+    def post(self, checkin, checkin_id):
+        res = []
+	oauth_token= self.request.get("access_token")
+        args = dict(venueId=checkin_id, v=20111203, oauth_token=self.request.get("access_token"))
+        url = 'https://api.foursquare.com/v2/checkins/add?'
+        f = urllib.urlopen(url,urllib.urlencode(args))
+	print f
+        response = json.load(urllib.urlopen(url,urllib.urlencode(args)))
 
         self.response.headers['Content-Type'] = 'application/json'
-        self.response.out.write(json.dumps(res))
+        #self.response.out.write(json.dumps(response))
         
 class CategoryListHandler(BaseHandler):
   
@@ -222,8 +236,9 @@ class CategoryListHandler(BaseHandler):
       categories = response["facets"]["category"]
       category_list = []
       for key, value in categories.iteritems():
-          temp = {"name":key,"count":value}
-          category_list.append(temp)
+          if value > 0:
+            temp = {"name":key,"count":value}
+            category_list.append(temp)
       sorted_category_list = sorted(category_list, key=lambda x: x["count"], reverse=True)
       return sorted_category_list
 
@@ -272,8 +287,7 @@ def main():
         ('/(event)/(category)/(.*)', EventsByCategoryHandler),
         ('/(event)/(.*)', EventHandler),
         ('/(venues)', VenuesHandler),
-        #('/(venue)/(.*)', VenueDetailHandler),
-        ('/(checkin)', CheckInHandler),
+        ('/(checkin)/(.*)', CheckInHandler),
         ], debug=True)
 
     util.run_wsgi_app(application)
