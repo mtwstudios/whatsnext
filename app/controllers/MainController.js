@@ -43,8 +43,8 @@ App.controllers.main = new Ext.Controller({
 
     onViewVenue: function(options) {
         App.views.eventsVenueView.updateWithRecord(options.venue);
-        App.views.eventsCategoryEventView.doLayout();
-        App.views.eventsView.setActiveItem(App.views.eventsCategoryEventsView);
+        App.views.eventsVenueView.doLayout();
+        App.views.eventsView.setActiveItem(App.views.eventsVenueView);
         App.views.viewport.setActiveItem(App.views.eventsView);
     },
 

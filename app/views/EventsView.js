@@ -2,7 +2,7 @@ App.views.EventsView = Ext.extend(Ext.Panel, {
     fullscreen: true,
     cls: 'home',
     layout: 'card',
-    iconCls: 'home',
+    iconCls: 'search',
     title: 'Events',
     
     initComponent: function() {
