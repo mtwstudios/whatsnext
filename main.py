@@ -236,8 +236,9 @@ class CategoryListHandler(BaseHandler):
       categories = response["facets"]["category"]
       category_list = []
       for key, value in categories.iteritems():
-          temp = {"name":key,"count":value}
-          category_list.append(temp)
+          if value > 0:
+            temp = {"name":key,"count":value}
+            category_list.append(temp)
       sorted_category_list = sorted(category_list, key=lambda x: x["count"], reverse=True)
       return sorted_category_list
 
