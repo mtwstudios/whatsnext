@@ -7,7 +7,7 @@ App.views.EventsCategoryEventView = Ext.extend(Ext.Panel, {
     
     dockedItems: [{
         xtype: 'toolbar',
-        title: 'Venue',
+        title: 'Event',
     }],
     
     items: [
@@ -15,7 +15,7 @@ App.views.EventsCategoryEventView = Ext.extend(Ext.Panel, {
             id: 'eventinfo',
             xtype: 'panel',
             styleHtmlContent:true,
-            tpl: '<div><img src="{icon}" />{name} {venue} {venue_address} {category} {times_pick}</div>',
+            tpl: '<div style="text-align:center"><img src="{icon}" /><strong>{name}</strong><br /><br /> {venue}<br /> {venue_address}<br /> {category} {times_pick}</div>',
             data: {},
         },
     ],
