@@ -13,7 +13,7 @@ App.views.EventsVenueView = Ext.extend(Ext.Panel, {
     items: [
         {
             cls: 'header',
-            html: '<div><p>Checkin here and find nearby?</p></div>',
+            html: '<div><h1>Checkin here and find nearby?</h1></div>',
         },
         {
             id: 'venueinfo',
@@ -26,10 +26,12 @@ App.views.EventsVenueView = Ext.extend(Ext.Panel, {
             xtype: 'button',
             text: 'Checkin!',
             ui: 'action',
+            id: 'venuecheckin',
             handler: function() {
                 Ext.dispatch({
                     controller: App.controllers.main,
                     action: 'onVenueCheckIn',
+                    venue: this.venue,
                 });
             },
         },
@@ -40,6 +42,9 @@ App.views.EventsVenueView = Ext.extend(Ext.Panel, {
         var infoPanel = this.getComponent('venueinfo');
         infoPanel.update(venue.data);
         infoPanel.doLayout();
+        
+        var checkin = this.getComponent('venuecheckin');
+        checkin.venue = venue;
     },
 
 });

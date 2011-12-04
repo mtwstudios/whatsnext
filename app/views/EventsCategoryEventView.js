@@ -18,6 +18,19 @@ App.views.EventsCategoryEventView = Ext.extend(Ext.Panel, {
             tpl: '<div><img src="{icon}" />{name} {venue} {venue_address} {category} {times_pick}</div>',
             data: {},
         },
+        {
+            xtype: 'button',
+            text: 'Checkin Now!',
+            ui: 'action',
+            id: 'venuecheckin',
+            handler: function() {
+                Ext.dispatch({
+                    controller: App.controllers.main,
+                    action: 'onVenueCheckIn',
+                    venue: this.venue,
+                });
+            },
+        },
     ],
 
     updateWithRecord: function(event) {

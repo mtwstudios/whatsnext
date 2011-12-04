@@ -49,4 +49,29 @@ App.controllers.main = new Ext.Controller({
         App.views.viewport.setActiveItem(App.views.eventsView);
     },
 
+    onVenueCheckIn: function(options) {
+        var uri = '/checkin/' + options.venue.get('id');
+        var loadingMask = new Ext.LoadMask(Ext.getBody(), {
+            msg: "Posting your check-in ..."
+        });
+        loadingMask.show();
+
+        Ext.Ajax.request({
+            url: uri,
+            method: 'POST',
+            params: {},
+            callback: function(options, success, response) {
+                if (!success) {
+                    console.log('Failed to checkin: ' + success);
+                }
+                Ext.dispatch({
+                    controller: App.controllers.main,
+                    action: 'onListCategories',
+                });
+                loadingMask.destroy();
+            },
+            scope: options,
+        });
+    },
+
 });
