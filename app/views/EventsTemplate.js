@@ -3,7 +3,7 @@ App.EventsTemplate = Ext.extend(Ext.XTemplate, {
         App.EventsTemplate.superclass.constructor.call(this, 
             '<tpl for=".">',
                 '<div class="event">',
-                '   <span class="text">{name} {category}</span>',
+                '   <span class="text">{name}</span>',
                 '</div>',
             '</tpl>'
         );

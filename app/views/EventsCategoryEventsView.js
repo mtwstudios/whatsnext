@@ -6,6 +6,7 @@ App.views.EventsCategoryEventsView = Ext.extend(Ext.Panel, {
     dockedItems: [{
         xtype: 'toolbar',
         title: 'Events',
+	id: 'eventsbar',
         items: [
             {xtype:'spacer'},
         ],
@@ -49,7 +50,8 @@ App.views.EventsCategoryEventsView = Ext.extend(Ext.Panel, {
             },
         });
 */
-                
+	var eventsbar = this.getComponent('eventsbar');
+	eventsbar.setTitle(category.get('name'));                
         this.doLayout();
     },
     
