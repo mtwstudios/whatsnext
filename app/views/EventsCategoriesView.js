@@ -1,4 +1,4 @@
-App.views.CategoriesView = Ext.extend(Ext.Panel, {
+App.views.EventsCategoriesView = Ext.extend(Ext.Panel, {
     fullscreen: true,
     cls: 'categories',
     layout: 'vbox',
@@ -23,7 +23,7 @@ App.views.CategoriesView = Ext.extend(Ext.Panel, {
                 'itemtap': function(self, index, item, e) {
                     Ext.dispatch({
                         controller: App.controllers.main,
-                        action: 'onViewCategory',
+                        action: 'onListCategoryEvents',
                         category: this.store.getAt(index),
                     });
                 }
@@ -32,5 +32,3 @@ App.views.CategoriesView = Ext.extend(Ext.Panel, {
     ],
     
 });
-
-/* Ext.reg('App.views.CategoriesView', App.views.CategoriesView); */

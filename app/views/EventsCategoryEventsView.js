@@ -1,11 +1,11 @@
-App.views.CategoryEventsView = Ext.extend(Ext.Panel, {
+App.views.EventsCategoryEventsView = Ext.extend(Ext.Panel, {
     fullscreen: true,
-    cls: 'categories',
+    cls: 'events',
     layout: 'vbox',
 
     dockedItems: [{
         xtype: 'toolbar',
-        title: 'Categories',
+        title: 'Events',
         items: [
             {xtype:'spacer'},
         ],
@@ -21,7 +21,7 @@ App.views.CategoryEventsView = Ext.extend(Ext.Panel, {
                 fields: [],
                 data: [],
             }),            
-            itemTpl: new App.EventsTemplate({inContext: false}),
+            itemTpl: new App.EventsTemplate(),
             listeners: {
                 'itemtap': function(self, index, item, e) {
                     Ext.dispatch({
@@ -40,12 +40,13 @@ App.views.CategoryEventsView = Ext.extend(Ext.Panel, {
             model: 'App.models.Event',
             proxy: {
                 type: 'ajax',
-                url: '/event/category/' + category + '?lat=' + WhatsNext.geo.lat + '&long=' + WhatsNext.geo.long,
+                url: '/event/category/' + category.get('name') + '?lat=' + WhatsNext.geo.lat + '&long=' + WhatsNext.geo.long,
             },
         });
-        wall.store.load({
+        events.store.load({
             scope: this,
             callback: function(records, operation, success) {
+                console.log(records)
                 this.getComponent('events').update(records);
             },
         });
@@ -54,5 +55,3 @@ App.views.CategoryEventsView = Ext.extend(Ext.Panel, {
     },
     
 });
-
-/* Ext.reg('App.views.CategoriesView', App.views.CategoriesView); */

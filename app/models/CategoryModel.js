@@ -16,7 +16,7 @@ App.models.Category = Ext.regModel("App.models.Category", {
 
 App.stores.categories = new Ext.data.Store({
 	model: "App.models.Category",
-/*  	autoLoad: true,  */
+ 	autoLoad: true, 
 	getGroupString: function(record) {
 	   return 'Events Categories'
 	},

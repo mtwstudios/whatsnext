@@ -33,12 +33,27 @@ App.views.HomeLastView = Ext.extend(Ext.Panel, {
         },
         {
             xtype: 'button',
-            text: 'What\'s Next',
+            text: 'What Next?',
             ui: 'action',
             handler: function() {
                 Ext.dispatch({
                     controller: App.controllers.main,
                     action: 'onListCategories',
+                });
+            },
+        },
+        {
+            cls: 'header',
+            html: '<div><p>or</p></div>',
+        },
+        {
+            xtype: 'button',
+            text: 'Checkin Near By First...',
+            ui: 'action',
+            handler: function() {
+                Ext.dispatch({
+                    controller: App.controllers.main,
+                    action: 'onListVenues',
                 });
             },
         },

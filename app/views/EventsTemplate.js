@@ -1,9 +1,9 @@
-App.CategoriesTemplate = Ext.extend(Ext.XTemplate, {
+App.EventsTemplate = Ext.extend(Ext.XTemplate, {
     constructor: function(config) {
-        App.CategoriesTemplate.superclass.constructor.call(this, 
+        App.EventsTemplate.superclass.constructor.call(this, 
             '<tpl for=".">',
-                '<div class="category {type}">',
-                '   <span class="text"> {name} ({count})</span>',
+                '<div class="event {name}">',
+                '   <span class="text">{name} {category}</span>',
                 '</div>',
             '</tpl>'
         );

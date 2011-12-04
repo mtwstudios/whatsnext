@@ -14,7 +14,9 @@ var WhatsNext = {
     }
 }
 
+/*
 geo.updateLocation(function(geo){
     WhatsNext.geo = geo;
 });
+*/
 

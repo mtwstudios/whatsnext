@@ -3,11 +3,12 @@ App.models.Venue = Ext.regModel('App.models.Venue', {
     fields: [
         {name: 'id', type: 'string'},
         {name: 'name', type: 'string'},
-        {name: 'latlong', type: 'string'},
+        {name: 'icon', type: 'string'},
+        {name: 'address', type: 'string'},
     ],
     proxy: {
         type: 'rest',
-        url: '/venues',
+        url: '/venues?lat=' + WhatsNext.geo.lat + '&long=' + WhatsNext.geo.long,
         listeners: {
             exception: function() {
                 console.log(">>>> exception!")
@@ -16,9 +17,7 @@ App.models.Venue = Ext.regModel('App.models.Venue', {
     },
 });
 
-App.stores.games = new Ext.data.Store({
-    model: 'App.models.Venue',
-/* 	autoLoad: true, */
-/* 	groupField: 'checkin_type', */
+App.stores.venues = new Ext.data.Store({
+	model: "App.models.Venue",
+ 	autoLoad: true, 
 });
-

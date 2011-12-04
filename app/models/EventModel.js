@@ -3,22 +3,9 @@ App.models.Event = Ext.regModel("App.models.Event", {
 	fields : [
         {name: "id", type: "string" },
         {name: "name", type: "string" },
-        {name: "times_pick", type: "string" },
         {name: "venue", type: "string" },
+        {name: "venue_address", type: "string" },
         {name: "category", type: "string" },
+        {name: "times_pick", type: "string" },
 	],
-    proxy: {
-        type: 'rest',
-        url: '/events',
-        listeners: {
-            exception: function() {
-                console.log(">>>> exception!")
-            }
-        }
-    },
-});
-
-App.stores.friends = new Ext.data.Store({
-	model: "App.models.Event",
-/* 	autoLoad: true, */
 });
