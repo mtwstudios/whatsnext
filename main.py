@@ -150,8 +150,11 @@ class VenuesHandler(BaseHandler):
 
     def get(self, req):
         res = []
+        latitude = self.request.get("lat")
+        longitude = self.request.get("long")
 
-        args = dict(ll="40.7,-74", v=20111203, oauth_token=self.current_user.access_token)
+        #args = dict(ll="40.7,-74", v=20111203, oauth_token=self.current_user.access_token)
+        args = dict(ll= str(latitude)+","+str(longitude), v=20111203, oauth_token=self.current_user.access_token)
         url = 'https://api.foursquare.com/v2/venues/search?'
         response = json.load(urllib.urlopen(url + urllib.urlencode(args)))
 	for venue in response['response']['venues']:
