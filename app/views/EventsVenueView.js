@@ -12,11 +12,26 @@ App.views.EventsVenueView = Ext.extend(Ext.Panel, {
     
     items: [
         {
+            cls: 'header',
+            html: '<div><p>Checkin here and find nearby?</p></div>',
+        },
+        {
             id: 'venueinfo',
             xtype: 'panel',
             styleHtmlContent:true,
             tpl: '<div><img src="{icon}" />{name} {address}</div>',
             data: {},
+        },
+        {
+            xtype: 'button',
+            text: 'Checkin!',
+            ui: 'action',
+            handler: function() {
+                Ext.dispatch({
+                    controller: App.controllers.main,
+                    action: 'onVenueCheckIn',
+                });
+            },
         },
     ],
 

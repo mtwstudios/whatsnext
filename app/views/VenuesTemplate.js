@@ -3,7 +3,7 @@ App.VenuesTemplate = Ext.extend(Ext.XTemplate, {
         App.VenuesTemplate.superclass.constructor.call(this, 
             '<tpl for=".">',
                 '<div class="venue {name}">',
-                '   <span class="text"><img src="{icon}" />{name} {address}</span>',
+                '   <span class="text"><img src="{icon}" />{name} <span class="venue_address">@ {address}</span></span>',
                 '</div>',
             '</tpl>'
         );
